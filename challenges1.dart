@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
             borderRadius: new BorderRadius.circular(8.0),
             child: Container(
               height: 150.0,
-              width: 300,
+              width: login.width,
               decoration: BoxDecoration(color: Colors.grey),
               child: Image.network(
                 levela,
@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
             borderRadius: new BorderRadius.circular(8.0),
             child: Container(
               height: 150.0,
-              width: 300,
+              width: login.width,
               decoration: BoxDecoration(color: Colors.grey),
               child: Image.network(
                 levelb,
@@ -123,8 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
             borderRadius: new BorderRadius.circular(8.0),
             child: Container(
               height: 150.0,
-              // width: 300.0,
-              width: 300,
+              width: login.width,
               decoration: BoxDecoration(color: Colors.grey),
               child: Image.network(
                 levelc,
@@ -149,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
             borderRadius: new BorderRadius.circular(8.0),
             child: Container(
               height: 150.0,
-              width: 300,
+              width: login.width,
               decoration: BoxDecoration(color: Colors.grey),
               child: Image.network(
                 leveld,
@@ -174,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
             borderRadius: new BorderRadius.circular(8.0),
             child: Container(
               height: 150.0,
-              width: 300,
+              width: login.width,
               decoration: BoxDecoration(color: Colors.grey),
               child: Image.network(
                 levele,

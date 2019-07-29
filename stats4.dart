@@ -50,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool b = false;
   DateTime d1 = DateTime.now();
   int stars = 0;
+  int comp = 0;
   Widget build(BuildContext context) {
     b == false ? getlist() : null;
 
@@ -158,8 +159,10 @@ class _MyHomePageState extends State<MyHomePage> {
         .then((snap) {
       setState(() {
         stars = snap['bnum'];
+        comp = snap['mnum'];
       });
     });
+    
   }
 
   func(String id) async {
@@ -203,7 +206,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   check() {
     if (b == false) {
-      return Center(child: Center(child: CircularProgressIndicator()));
+      return Container(
+        height: login.height,
+        child: Center(child: Center(child: CircularProgressIndicator())),
+      );
     } else
       print(acc);
     //print(co
@@ -242,7 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 children: <Widget>[
                   Padding(
-                    child: Text(completed.length.toString(),
+                    child: Text(comp.toString()??completed.length.toString,
                         style:
                             TextStyle(fontFamily: 'Segoe UI', fontSize: 55.0)),
                     padding: EdgeInsets.fromLTRB(50, 10, 50, 0),

@@ -2,14 +2,11 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'video4.dart' as video;
 import 'main.dart' as login;
-import 'main_screen.dart' as ms;
 import 'congo.dart' as congo;
-import 'package:progress_indicators/progress_indicators.dart';
 
 class Persona extends StatefulWidget {
   String cname, scat, level, tag, image;
@@ -53,7 +50,7 @@ class _PersonaState extends State<Persona> {
       height: 258.0,
       // width: 340.0,
       child: Material(
-          elevation: 1.0,
+          elevation: 5.0,
           borderRadius: BorderRadius.circular(6.0),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -265,9 +262,10 @@ class _PersonaState extends State<Persona> {
       samplev = tempImage;
     });
   }
-
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    
     String postname, description;
     getlink(String type) async {
       Navigator.pushReplacement(
@@ -282,7 +280,7 @@ class _PersonaState extends State<Persona> {
       url = await downloadUrl.ref.getDownloadURL() as String;
 
       await Firestore.instance.collection("POST").document(postname).setData({
-        "body": description ??myController.text,
+        "body": description ?? myController.text,
         // "url": url,
         "timestamp": DateTime.now(),
         "level": level,
@@ -320,18 +318,18 @@ class _PersonaState extends State<Persona> {
       }
       print("upload");
       updatedata(postname);
-      
     }
 
     return Scaffold(
+      key: _scaffoldKey,
         resizeToAvoidBottomPadding: true,
         appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.grey[800]),
           title: Text('', style: TextStyle(color: Colors.grey[800])),
           backgroundColor: Colors.white,
           elevation: 0.0,
           actions: <Widget>[
             RaisedButton(
-              
                 color: Color(0xffe73131),
                 child: Text("POST",
                     style: TextStyle(
@@ -351,6 +349,13 @@ class _PersonaState extends State<Persona> {
                     task = firebaseStorageRef
                         .putFile((samplev != null) ? samplev : samplei);
                     getlink((samplev != null) ? "v" : "i");
+                  }
+                  else {
+                    print("object");
+                   _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text('Select a Media file first'),
+      duration: Duration(seconds: 2),
+    ));
                   }
                 }),
           ],
@@ -458,21 +463,24 @@ class _PersonaState extends State<Persona> {
             ),
             SizedBox(height: 0.0),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                FlatButton(
-                  onPressed: () {},
-                  child: Text(
-                     '#' + cname,
-                    style:
-                        new TextStyle(fontSize: 15.0, color: Color(0xff2284a1)),
+                Container(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: FlatButton(
+                    onPressed: () {},
+                    child: Text(
+                      '#' + cname,
+                      style: new TextStyle(
+                          fontSize: 15.0, color: Color(0xff2284a1)),
+                    ),
                   ),
                 ),
                 FlatButton(
                   onPressed: () {},
                   child: Text(
-                    "#level  " + level ,
+                    "#level  " + level.toUpperCase(),
                     style:
                         new TextStyle(fontSize: 15.0, color: Color(0xff2284a1)),
                   ),
@@ -489,6 +497,34 @@ class _PersonaState extends State<Persona> {
             ),
             (samplei == null && samplev == null) ? Choose() : Post(),
             //Choose(),
+            /*  Container(
+              padding: EdgeInsets.all(40),
+              width: MediaQuery.of(context).size.width,
+              height: 300,
+              child: Card(
+                elevation: 5,
+                child: DottedBorder(
+                  padding: EdgeInsets.all(10),
+                  color: Colors.black,
+                  strokeWidth: 1,
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.fromLTRB(60, 20, 50, 20),
+                        child: Image.asset(
+                          "assets/upload.png",
+                          scale: 2,
+                          alignment: Alignment.center,
+                        ),
+                      ),
+                      Text("Upload Media")
+                    ],
+                  ),
+                ),
+              ),
+            ), */
           ])
         ]));
   }
@@ -504,7 +540,6 @@ class _PersonaState extends State<Persona> {
 
   //       content: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
   //         children: <Widget>[ Text("Uploading post  "),  CircularProgressIndicator(),]),
-            
 
   //           // content: new Text("Alert Dialog body"),
   //           actions: <Widget>[

@@ -13,9 +13,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: buildActivityFeed(),
-    );
+    return 
+    // Scaffold(
+      // body:
+       buildActivityFeed()
+       
+    // ,)
+    ;
   }
 
   bool bl = false;

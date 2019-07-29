@@ -4,7 +4,7 @@ import 'profile.dart' as profile;
 import 'video3.dart' as video;
 import 'main.dart' as login;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 
 int r;
 double ating = 0.0;
@@ -106,8 +106,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return Container(
-        child: Column(
+      return
+      //  Container(
+      //   child:
+         Column(
           children: [
             Stack(
               children: <Widget>[
@@ -140,15 +142,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                              width: 61.0,
-                              height: 61.0,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.white, width: 2),
-                                  image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: NetworkImage(post.user_url)))),
+                            // foregroundDecoration: BoxDecoration(shape: BoxShape.circle),
+                            width: 61.0,
+                            height: 61.0,
+                            
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 2),
+                              image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(post.user_url)),
+                            ),
+                          ),
                           Padding(
                               padding: EdgeInsets.all(5),
                               child: GestureDetector(
@@ -191,6 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ],
                                 )),
                               )),
+                          Spacer(),
                           Padding(
                             padding: EdgeInsets.all(5),
                             child: Icon(
@@ -202,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(25,10,10,10),
+                      padding: EdgeInsets.fromLTRB(25, 10, 10, 10),
                       child: Text(
                         post.body,
                         style: TextStyle(
@@ -249,26 +256,35 @@ class _MyHomePageState extends State<MyHomePage> {
                     Padding(
                         padding: EdgeInsets.all(5),
                         child: Container(
-                          // height: 150.0,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          child: (post.mtype == 'v')
-                              ? Container(
-                                  padding: EdgeInsets.all(10),
-                                  height: 400,
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[100],
-                                    // borderRadius: BorderRadius.circular(18.0),
-                                  ),
-                                  child: video.VideoApp(url: post.media_url))
-                              : Image.network(
-                                  post.media_url,
-                                  fit: BoxFit.cover,
-                                ),
-                        )),
+                            // height: 150.0,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                            child: (post.mtype == 'v')
+                                ? Container(
+                                    padding: EdgeInsets.all(10),
+                                    height: 400,
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[100],
+                                      // borderRadius: BorderRadius.circular(18.0),
+                                    ),
+                                    child: video.VideoApp(url: post.media_url))
+                                // : Image.network(
+                                //     post.media_url,
+                                //     fit: BoxFit.cover,
+                                //   ),
+                                : Image(
+                                    image: AdvancedNetworkImage(
+                                      post.media_url,
+                                      // header: header,
+                                      useDiskCache: true,
+                                      cacheRule: CacheRule(
+                                          maxAge: const Duration(minutes: 30)),
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ))),
                     Padding(
                       padding: EdgeInsets.all(10),
                       child: Column(
@@ -311,8 +327,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ],
-        ),
-      );
+         )
+      // ,)
+      ;
     }
   }
 
@@ -347,8 +364,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   row(Post post, double curre) {
-    if(curre==0.01)
-    curre=0;
+    if (curre == 0.01) curre = 0;
     return Row(
       // crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.end,
@@ -447,23 +463,23 @@ class _MyHomePageState extends State<MyHomePage> {
   timediff(post) {
     int th = DateTime.now().difference(post.datetime).inHours;
     int td = DateTime.now().difference(post.datetime).inDays;
-    double week = td/7;
-    int tw=week.round();
+    double week = td / 7;
+    int tw = week.round();
     if (th < 24) {
-      if(th==1)return "1 hour ago";
-      else 
-      return th.toString() +
-          " hours ago";
-    }
-    else if ( td < 7) {
-      if(td==1)return "1 day ago";
-      else 
-      return td.toString() +
-          " days ago";
+      if (th == 1)
+        return "1 hour ago";
+      else
+        return th.toString() + " hours ago";
+    } else if (td < 7) {
+      if (td == 1)
+        return "1 day ago";
+      else
+        return td.toString() + " days ago";
     } else {
-      if(tw==1)return "1 week ago";
-      else 
-      return tw.toString() + " weeks ago";
+      if (tw == 1)
+        return "1 week ago";
+      else
+        return tw.toString() + " weeks ago";
     }
   }
 }

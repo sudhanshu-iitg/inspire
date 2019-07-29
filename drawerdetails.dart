@@ -20,8 +20,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     !loading ? getdata() : null;
 
-    return MaterialApp(
-      home: Scaffold(
+    return 
+    // MaterialApp(
+    //   home: 
+      Scaffold(
         appBar: AppBar(
           title: Text(
             title,
@@ -33,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.all(20),
           child: Center(child: Text(body),),
         ),
-      ),
+      // ),
     );
   }
 

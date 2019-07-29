@@ -8,91 +8,61 @@ import 'home2.dart' as feed1;
 import 'home3.dart' as feed;
 import 'package:firebase_analytics/observer.dart';
 import 'main.dart' as login;
+import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
 
+void main() => runApp(MyApp());
 
-
-class TabsDemoScreen extends StatefulWidget {
-  // String uname;
-  TabsDemoScreen();
-
-  @override
-  TabsDemoScreenState createState() => TabsDemoScreenState();
-}
-
-class TabsDemoScreenState extends State<TabsDemoScreen> {
-  // String uname;
-  TabsDemoScreenState();
-  int currentTabIndex = 0;
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // int currentTabIndex = 0;
-     List<Widget> tabs = [
-    challenge.MyHomePage(),
-    Fed(),
-    stats.MyApp(),
-  ];
-    var scaffold = Scaffold(
-        //drawer
-        body: tabs[currentTabIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: onTapped,
-          currentIndex: currentTabIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.outlined_flag),
-              title: Text("Challenges"),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.web),
-              title: Text("Feed"),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.sort),
-              title: Text("Stats"),
-            )
-          ],
-        ));
     return MaterialApp(
-         navigatorObservers: [
-    FirebaseAnalyticsObserver(analytics: login.analytics),
-  ],
-
-      theme: ThemeData(primaryColor: Color(0xffe73131),),
-      home: scaffold,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
     );
   }
+}
 
-  onTapped(int index) {
-    setState(() {
-      currentTabIndex = index;
-    });
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+  ScrollController _scrollViewController;
+  ScrollController control;
+  bool up = false;
+  @override
+  void initState() {
+    control = ScrollController();
+    // control.addListener(_scrollListener);
+    super.initState();
+    _tabController = TabController(vsync: this, length: 2);
+    _scrollViewController = ScrollController(initialScrollOffset: 0.0);
   }
-}
-
-class Fed extends StatefulWidget {
-  Fed({
-    Key key,
-  }) : super(key: key);
 
   @override
-  FedState createState() => FedState();
-}
+  void dispose() {
+    _tabController.dispose();
+    _scrollViewController.dispose();
+    super.dispose();
+  }
 
-class FedState extends State<Fed> with TickerProviderStateMixin {
   @override
-
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorObservers: [
-    FirebaseAnalyticsObserver(analytics: login.analytics),
-  ],
-      theme: ThemeData(primaryColor: Color(0xffe73131),),
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-            drawer: drawer.drawer(context),
-            appBar: AppBar(
+    return Scaffold(
+      body: NestedScrollView(
+        controller: _scrollViewController,
+        headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              pinned: false,
+              floating: true,
               iconTheme: new IconThemeData(color: Colors.grey[800]),
               title: Text(
                 'Feed',
@@ -126,12 +96,11 @@ class FedState extends State<Fed> with TickerProviderStateMixin {
                   },
                 ),
               ],
+              forceElevated: boxIsScrolled,
               bottom: TabBar(
-                
                 unselectedLabelColor: Colors.black,
                 labelColor: Colors.black,
                 tabs: <Widget>[
-                  
                   Tab(
                     child: Text('Following',
                         style: TextStyle(color: Colors.grey[800])),
@@ -141,16 +110,20 @@ class FedState extends State<Fed> with TickerProviderStateMixin {
                         style: TextStyle(color: Colors.grey[800])),
                   ),
                 ],
+                controller: _tabController,
               ),
-            ),
-            body: TabBarView(
-              children: <Widget>[
-               feed.Feed(),
-               feed1.MyHomePage()
-              ],
-            )),
+            )
+          ];
+        },
+        body: TabBarView(
+          children: <Widget>[
+            feed.Feed(), 
+          feed1.MyHomePage(),
+          ],
+          controller: _tabController,
+        ),
       ),
     );
   }
-}
 
+}

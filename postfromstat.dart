@@ -88,8 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     current = 0.0;
-    ating=0.0;
-    loading=true;
+    ating = 0.0;
+    loading = true;
   }
 
   Widget build(BuildContext context) {
@@ -105,170 +105,184 @@ class _MyHomePageState extends State<MyHomePage> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return Scaffold(body:SingleChildScrollView(child: 
-      Container(
-        padding: EdgeInsets.fromLTRB(0,50,0,0),
-        child: Column(
-          children: [
-            Stack(
-              children: <Widget>[
-                Container(
-                  height: 170.0,
-                  width: double.infinity,
-                  color: Colors.grey[200],
-                ),
-                Positioned(
-                  top: 10.0,
-                  left: 5.0,
-                  right: 5.0,
-                  child: Material(
-                    elevation: 2.0,
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: Colors.white),
-                    ),
-                  ),
-                ),
-                Column(
+      return Scaffold(
+        body: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
+            child: Column(
+              children: [
+                Stack(
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Container(
-                              width: 50.0,
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: NetworkImage(post.user_url)))),
-                          Padding(
-                              padding: EdgeInsets.all(5),
-                              child: GestureDetector(
-                                onTap: () {
-                                  print(post.uid);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => profile.MyApp(
-                                              uid: post.uid,
-                                            )),
-                                  );
-                                },
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width/3,
-                                    child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      post.uname,
-                                      style: TextStyle(
-                                        fontSize: 22.0,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: 'Segoe UI',
-                                        color: Colors.grey[800],
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                              )),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Text(
-                              DateTime.now()
-                                  .difference(post.datetime)
-                                  .inHours
-                                  .toString()+" hrs ago",
-                              style: TextStyle(
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w300,
-                                fontFamily: 'Segoe UI',
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(
-                              Icons.more_vert,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
+                    Container(
+                      height: 170.0,
+                      width: double.infinity,
+                      color: Colors.grey[200],
                     ),
-                    Padding(
-                        padding: EdgeInsets.all(10),
+                    Positioned(
+                      top: 10.0,
+                      left: 5.0,
+                      right: 5.0,
+                      child: Material(
+                        elevation: 2.0,
+                        borderRadius: BorderRadius.circular(15.0),
                         child: Container(
-                          // height: 150.0,
-                          width: MediaQuery.of(context).size.width,
+                          height: 200,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          child: (post.mtype == 'v')
-                              ? Container(
-                                  padding: EdgeInsets.all(10),
-                                  height: 400,
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(18.0),
-                                  ),
-                                  child: video.VideoApp(url: post.media_url))
-                              : Image.network(
-                                  post.media_url,
-                                  fit: BoxFit.cover,
-                                ),
-                        )),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: [
-                          Text(
-                            post.body,
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w300,
-                              fontFamily: 'Segoe UI',
-                              color: Colors.grey[700],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.0,
-                          ),
-                          Container(
-                              height: 1.0,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.grey[600]),
-                        ],
+                              borderRadius: BorderRadius.circular(15.0),
+                              color: Colors.white),
+                        ),
                       ),
                     ),
-                    Padding(
-                        padding: EdgeInsets.all(0),
-                        child: Column(
-                          children: <Widget>[
-                            // SizedBox(
-                            //   height: 10.0,
-                            // ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  20.0, 0.0, 0.0, 15.0),
-                              child: row(post, current),
-                            ),
-                          ],
-                        )),
+                    Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Container(
+                                  width: 50.0,
+                                  height: 50.0,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: NetworkImage(post.user_url)))),
+                              Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print(post.uid);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => profile.MyApp(
+                                                  uid: post.uid,
+                                                )),
+                                      );
+                                    },
+                                    child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                3,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              post.uname,
+                                              style: TextStyle(
+                                                fontSize: 22.0,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: 'Segoe UI',
+                                                color: Colors.grey[800],
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                  )),
+                              Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Text(
+                                  DateTime.now()
+                                          .difference(post.datetime)
+                                          .inHours
+                                          .toString() +
+                                      " hrs ago",
+                                  style: TextStyle(
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.w300,
+                                    fontFamily: 'Segoe UI',
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(5),
+                                child: GestureDetector(
+                                  onTap: (){
+                                    print("ontap");
+                                     },
+                                  child: Icon(
+                                    Icons.more_vert,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Container(
+                              // height: 150.0,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
+                              child: (post.mtype == 'v')
+                                  ? Container(
+                                      padding: EdgeInsets.all(10),
+                                      height: 400,
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                      ),
+                                      child:
+                                          video.VideoApp(url: post.media_url))
+                                  : Image.network(
+                                      post.media_url,
+                                      fit: BoxFit.cover,
+                                    ),
+                            )),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Text(
+                                post.body,
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w300,
+                                  fontFamily: 'Segoe UI',
+                                  color: Colors.grey[700],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Container(
+                                  height: 1.0,
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Colors.grey[600]),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.all(0),
+                            child: Column(
+                              children: <Widget>[
+                                // SizedBox(
+                                //   height: 10.0,
+                                // ),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      20.0, 0.0, 0.0, 15.0),
+                                  child: row(post, current),
+                                ),
+                              ],
+                            )),
+                      ],
+                    ),
                   ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
-      ),),);
+      );
     }
   }
 
@@ -314,16 +328,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   star() {
-  
-      return GestureDetector(
-          onTap: () {
-            
-          },
-          child: Icon(
-            Icons.star,
-            size: 40,
-            color: Colors.grey[600],
-          ));
+    return GestureDetector(
+        onTap: () {},
+        child: Icon(
+          Icons.star,
+          size: 40,
+          color: Colors.grey[600],
+        ));
   }
 
   extended() {

@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'main_screen.dart' as ms;
 import 'package:flutter/animation.dart';
 
-void main() {
-  runApp(MyApp());
-}
+// void main() {
+//   runApp(MyApp());
+// }
 
-class MyApp extends StatelessWidget {
-  MyApp({
-    Key key,
-  }) : super(key: key);
+// class MyApp extends StatelessWidget {
+//   MyApp({
+//     Key key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.deepOrange),
-      home: MyHomePage(
-        star: 3,
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Flutter Demo',
+//       theme: ThemeData(primarySwatch: Colors.deepOrange),
+//       home: MyHomePage(
+//         star: 3,
+//       ),
+//     );
+//   }
+// }
 
 class MyHomePage extends StatefulWidget {
   int star;

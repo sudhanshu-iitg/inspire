@@ -3,16 +3,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
-import 'main_screen.dart' as ms;
+import 'main_screen1.dart' as ms;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'notif-handler.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'onboarding.dart' as on;
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 String uid;
 String uname;
 String photo;
-
+double width = 300;
+double height = 300;
+FirebaseAnalytics analytics = FirebaseAnalytics();
 void main() {
+
+  
+
   runApp(
     MaterialApp(
+       navigatorObservers: [
+    FirebaseAnalyticsObserver(analytics: analytics),
+  ],
       home: LoginPage(),
     ),
   );
@@ -37,15 +51,15 @@ class _LoginPageState extends State<LoginPage> {
     uname = null;
     photo = null;
     print(isLoggedIn);
-    check();
+    // check();
     super.initState();
-
+    FirebaseNotifications().setUpFirebase();
     // check();
     // initiateFacebookLogin();
   }
 
   var facebookLogin = FacebookLogin();
-
+  var googleSignIn = GoogleSignIn();
   void onLoginStatusChanged(bool isLoggedIn, {profileData}) {
     setState(() {
       this.isLoggedIn = isLoggedIn;
@@ -56,15 +70,50 @@ class _LoginPageState extends State<LoginPage> {
   int pgn = 0;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+
+    return  Scaffold(
         body: Container(
-          child: Center(
-            child: _displayLoginButton(profileData),
-          ),
+          child:  SingleChildScrollView
+          (child:userI(),),
+          
         ),
-      ),
+      
     );
+  }
+
+  void initGoogleLogin() async {
+    print("0");
+    final GoogleSignInAccount googleAccount = await googleSignIn.signIn();
+    print("1");
+    DocumentReference ref =
+        Firestore.instance.collection('USER').document(googleAccount.id);
+    ref.setData({
+      'uid': googleAccount.id,
+      'email': googleAccount.email,
+      'photoURL': googleAccount.photoUrl,
+      'uName': googleAccount.displayName,
+      //'lastSeen': DateTime.now()
+    }, merge: true);
+    print("2");
+    save(
+      googleAccount.id,
+      googleAccount.displayName,
+      googleAccount.photoUrl,
+    );
+    print("3");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return ms.MyHomePage();
+      }),
+    );
+
+    print("4");
+    uid = googleAccount.id;
+    uname = googleAccount.displayName;
+    photo = googleAccount.photoUrl;
   }
 
   void initiateFacebookLogin() async {
@@ -102,12 +151,12 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         onLoginStatusChanged(true, profileData: profile);
-         Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) {
-          return ms.TabsDemoScreen();
-        }),
-      );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return ms.MyHomePage();
+          }),
+        );
         break;
     }
     uid = profileData['id'];
@@ -115,122 +164,158 @@ class _LoginPageState extends State<LoginPage> {
     photo = profileData['picture']['data']['url'];
   }
 
-  _displayLoginButton(profile) {
-    /* return RaisedButton(
-            child: Text("Login with Facebook"),
-            onPressed: () {
-              initiateFacebookLogin();
-            }); */
-    return Container(
-      // height: 1000.0,
-      child: PageView(
-          onPageChanged: (int inr) {},
-          controller: pageController,
-          children: <Widget>[
-            Stack(
+  userI() {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(width / 3, 50, width / 3, 50),
+          child: Text("inspire", style: TextStyle(fontSize: 20)),
+        ),
+        Container(
+          height: height / 2,
+          child: PageView(
+              onPageChanged: (int inr) {
+                setState(() {
+                  pgn = inr;
+                });
+              },
+              controller: pageController,
               children: <Widget>[
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Image.asset('assets/log.png',
-                        height: MediaQuery.of(context).size.height / 1.1,
-                        width: double.infinity),
-                    Container(
-                      color: Colors.grey[600],
-                      margin: EdgeInsets.all(6),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height -
-                          MediaQuery.of(context).size.height / 1.1 -
-                          12,
-                      child: RaisedButton(
-                          color: Color(0xffe73131),
-                          child: Text(
-                            "Get Started",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                          onPressed: () {
-                            // initiateFacebookLogin();
-
-                            pageController.jumpToPage(1);
-                          }),
+                    SizedBox(
+                      height: height / 3.5,
+                      child: Text("vector"),
+                    ),
+                    Center(
+                      child: Text("Line"),
                     ),
                   ],
                 ),
+                Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: height / 3.5,
+                      child: Text("vector"),
+                    ),
+                    Center(
+                      child: Text("Line"),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: height / 3.5,
+                      child: Text("vector"),
+                    ),
+                    Center(
+                      child: Text("Line"),
+                    ),
+                  ],
+                )
+              ]),
+        ),
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: Center(
+            child: Container(
+              // width: width/3,
+              child: dots(),
+            ),
+          ),
+        ),
+        Row(
+          children: <Widget>[
+            Spacer(),
+            Column(
+              children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      MediaQuery.of(context).size.width / 6,
-                      MediaQuery.of(context).size.height / 4,
-                      0,
-                      0),
-                  child: Text(
-                    "inspire",
-                    textScaleFactor: 6,
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w500),
+                  padding: EdgeInsets.all(10),
+                  child: Text("Sign IN"),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return ms.MyHomePage();
+                            }),
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Image.asset(
+                            'assets/google.png',
+                            height: 50,
+                            width: 50,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          initiateFacebookLogin();
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Image.asset(
+                            "assets/facebook.png",
+                            height: 50,
+                            width: 50,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 )
               ],
-            ),
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Image.asset(
-                    'assets/log1.png',
-                  ),
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Image.asset(
-                    'assets/log2.png',
-                  ),
-                  Container(),
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Image.asset(
-                    'assets/log3.png',
-                  ),
-                  Container(),
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Image.asset(
-                    'assets/log4.png',
-                    height: MediaQuery.of(context).size.height / 1.1,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(6),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width,
-                    child: RaisedButton(
-                        color: Color(0xffe73131),
-                        child: Text(
-                          "Login with Facebook",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                        onPressed: () {
-                          initiateFacebookLogin();
-                          // pageController.jumpToPage(1);
-                        }),
-                  ),
-                ],
-              ),
-            ),
-          ]),
+            )
+          ],
+        )
+      ],
     );
+  }
+
+  dots() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        icon(0),
+        SizedBox(
+          width: 3,
+        ),
+        icon(1),
+        SizedBox(
+          width: 3,
+        ),
+        icon(2),
+      ],
+    );
+  }
+
+  icon(int a) {
+    if (a == pgn) {
+      return Container(
+        padding: EdgeInsets.all(15),
+        height: 10,
+        width: 10,
+        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+      );
+    } else
+      return Container(
+        padding: EdgeInsets.all(15),
+        height: 7,
+        width: 7,
+        decoration:
+            BoxDecoration(shape: BoxShape.circle, color: Colors.grey[400]),
+      );
   }
 
   void check() async {
@@ -247,12 +332,12 @@ class _LoginPageState extends State<LoginPage> {
         print(uid ?? 'shit');
         isLoggedIn = true;
       });
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) {
-          return ms.TabsDemoScreen();
-        }),
-      );
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) {
+      //     return ms.TabsDemoScreen();
+      //   }),
+      // );
     } else {
       print('check false');
       isLoggedIn = false;

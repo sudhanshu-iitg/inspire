@@ -29,7 +29,13 @@ class _MyHomePageState extends State<MyHomePage> {
             case ConnectionState.waiting:
               return Scaffold(body: Center(child: Text('Loading...')));
             default:
-              return Scaffold(body: ListView(
+              return 
+              // Scaffold(body: 
+             Container(
+               height: login.height/.10,
+               child: 
+              ListView(
+                
                   children:
                       snapshot.data.documents.map((DocumentSnapshot document) {
                     return  Tile(document);
@@ -49,6 +55,8 @@ class Tile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: post.MyHomePage(snap: document,));}}
+
+      
 class MyHome extends StatefulWidget {
   MyHome({
     Key key,

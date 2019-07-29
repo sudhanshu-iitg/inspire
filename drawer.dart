@@ -22,7 +22,7 @@ pro(context) {
         width: 100.0,
         height: 100.0,
         decoration: BoxDecoration(
-          color:Colors.grey[100],
+          color:Colors.grey[200],
           shape: BoxShape.circle,
           image: DecorationImage(
             fit: BoxFit.fill,
@@ -49,7 +49,7 @@ drawer(context) {
         DrawerHeader(
           child: pro(context),
           decoration: BoxDecoration(
-                  // color: Colors.deepOrange,
+                  color: Colors.grey[100],
               ),
         ),
      

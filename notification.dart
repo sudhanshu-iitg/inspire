@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'main.dart' as login;
 
-void main() => runApp(MyApp());
+// void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Notofications',
-      home: MyHomePage(),
-    );
-  }
-}
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+      
+//       title: 'Notofications',
+//       home: MyHomePage(),
+//     );
+//   }
+// }
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -72,11 +73,11 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(record.name),
           trailing: GestureDetector(
             child: Icon(Icons.close),
-            onTap: accept(record, data),
+            onTap: (){accept(record, data);},
           ),
           leading: GestureDetector(
             child: Icon(Icons.check),
-            onTap: deny(data,record),
+            onTap: (){deny(data,record);},
           ),
         ),
       ),

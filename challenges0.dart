@@ -55,8 +55,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     state == false ? getdata() : null;
 
-    return MaterialApp(
-      home: Scaffold(
+    return 
+    // MaterialApp(
+    //   home: 
+      Scaffold(
         body: Builder(
           builder: (context) => Container(
                 child: (!state)
@@ -166,8 +168,9 @@ class _MyHomePageState extends State<MyHomePage> {
         bottomSheet: bottom(),
         endDrawer: bottom(),
         // bottomSheet: bottom(),
-      ),
-    );
+      )
+    // ,)
+    ;
   }
 
   Widget bottom() {
@@ -184,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
               borderRadius: BorderRadius.circular(30.0),
             ),
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
                   return post.Persona(

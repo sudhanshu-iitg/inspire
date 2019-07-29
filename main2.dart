@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
     uname = null;
     photo = null;
     print(isLoggedIn);
-check();
+    check();
     super.initState();
     // check();
     // initiateFacebookLogin();
@@ -55,8 +55,6 @@ check();
   int pgn = 0;
   @override
   Widget build(BuildContext context) {
-  
-
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -67,7 +65,8 @@ check();
           ),
         ),
       ),
-    );}
+    );
+  }
 //     if(isLoggedIn){return Scaffold(body:_displayUserData(profileData));}
 // else {return Scaffold(body: _displayLoginButton(profileData),);}  }
 
@@ -114,7 +113,6 @@ check();
   }
 
   _displayUserData(profileData) {
-    
     return ms.TabsDemoScreen();
   }
 
@@ -125,45 +123,53 @@ check();
               initiateFacebookLogin();
             }); */
     return Container(
-      
       // height: 1000.0,
       child: PageView(
-        
           onPageChanged: (int inr) {},
           controller: pageController,
           children: <Widget>[
-            Stack(children: <Widget>[
-            Column(
-              
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            Stack(
               children: <Widget>[
-                Image.asset('assets/log.png',
-                    height: MediaQuery.of(context).size.height / 1.1,
-                    width: double.infinity),
-                Container(
-                  color: Colors.grey[600],
-                  margin: EdgeInsets.all(6),
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height -
-                      MediaQuery.of(context).size.height / 1.1-12,
-                  child: RaisedButton(
-                    
-                      color: Color(0xffe73131),
-                      child: Text("Get Started",style: TextStyle(color: Colors.white,fontSize: 20),),
-                      onPressed: () {
-                        // initiateFacebookLogin();
-
-                        
-                        pageController.jumpToPage(1);
-                      }),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Image.asset('assets/log.png',
+                        height: MediaQuery.of(context).size.height / 1.1,
+                        width: double.infinity),
+                    Container(
+                      color: Colors.grey[600],
+                      margin: EdgeInsets.all(6),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height -
+                          MediaQuery.of(context).size.height / 1.1 -
+                          12,
+                      child: RaisedButton(
+                          color: Color(0xffe73131),
+                          child: Text(
+                            "Get Started",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          onPressed: () {
+                            pageController.jumpToPage(1);
+                          }),
+                    ),
+                  ],
                 ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).size.width / 6,
+                      MediaQuery.of(context).size.height / 4,
+                      0,
+                      0),
+                  child: Text(
+                    "inspire",
+                    textScaleFactor: 6,
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w500),
+                  ),
+                )
               ],
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width/6,MediaQuery.of(context).size.height/4,0,0),
-              child: Text("inspire",textScaleFactor: 6,style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),),
-            )
-            ],),
             SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -210,7 +216,10 @@ check();
                     width: MediaQuery.of(context).size.width,
                     child: RaisedButton(
                         color: Color(0xffe73131),
-                        child: Text("Login with Facebook",style: TextStyle(color: Colors.white,fontSize: 18),),
+                        child: Text(
+                          "Login with Facebook",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        ),
                         onPressed: () {
                           initiateFacebookLogin();
                           // pageController.jumpToPage(1);
@@ -245,7 +254,7 @@ check();
       });
     } else {
       print('check false');
-      isLoggedIn=false;
+      isLoggedIn = false;
     }
   }
 

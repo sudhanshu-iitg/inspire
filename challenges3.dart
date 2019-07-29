@@ -6,26 +6,11 @@ import 'search.dart' as search;
 import 'drawer.dart' as drawer;
 import 'dart:async';
 import 'notification.dart' as notif;
-
+import 'main.dart' as login;
 
 void main() {
   runApp(MyHomePage());
 }
-
-// class MyApp extends StatelessWidget {
-//   MyApp({
-//     Key key,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(primaryColor: Colors.white),
-//       home: MyHomePage(),
-//     );
-//   }
-// }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({
@@ -36,9 +21,11 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+bool load = false;
+
 class _MyHomePageState extends State<MyHomePage> {
   _MyHomePageState();
-
+  bool load = false;
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: Firestore.instance.collection('CATEGORIES').snapshots(),
@@ -74,10 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           );
                         }),
                     IconButton(
-                      icon: Icon(
-                        Icons.notifications,
-                        color: Color(0XFF9C9C9C),
-                      ),
+                      icon: not(),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -85,7 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               builder: (context) => notif.MyHomePage()),
                         );
                       },
-                    ), IconButton(
+                    ),
+                    IconButton(
                       icon: Icon(
                         Icons.info_outline,
                         color: Color(0XFF9C9C9C),
@@ -99,213 +84,264 @@ class _MyHomePageState extends State<MyHomePage> {
                 body: ListView(
                   children:
                       snapshot.data.documents.map((DocumentSnapshot document) {
-                    return  Tile(document.documentID);
+                    return Tile(document.documentID);
                   }).toList(),
                 ),
               );
           }
         });
   }
-uploadcomplete(context) {
-  return showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Dialog(
-            //shape: RoundedRectangleBorder(
+
+  uploadcomplete(context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return Dialog(
+              //shape: RoundedRectangleBorder(
               //  borderRadius: BorderRadius.circular(10.0)),
-            child: Container(
-              padding: const EdgeInsets.all(20.0),
-                height: MediaQuery.of(context).size.height*0.52-50,
-                width: MediaQuery.of(context).size.width*0.7,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    
-                    SizedBox(height:30.0),
-                    Text(
-                  '1 of 3',
-                  style: TextStyle(
-                      fontFamily: 'Segoe UI',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16.0,
-                      color: Color(0xff5cb0c9)),
-                ),
-                SizedBox(height: 20.0,),
-                Text(
-                  'Choose a challenge that intrigues you, lies in your interest.',
-                  style: TextStyle(
-                      fontFamily: 'Segoe UI',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 19.0,
-                      color: Colors.grey[800]),
-                ),
-                SizedBox(height: 70.0,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[FlatButton(
-                shape: RoundedRectangleBorder(
-                  //borderRadius: BorderRadius.circular(30.0),
-                ),
-                color: Color(0xFFE73131),
-                onPressed: () {Navigator.of(context, rootNavigator: true).pop();uploadcomplete1(context);},
-                child: Text(
-                  'Next',
-                  style: TextStyle(
-                      fontFamily: 'Segoe UI',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 19.0,
-                      color: Colors.white),
-                ),
-              ),],)
-                
-                
-                    
-                  ],
-                )));
-      });
-}
+              child: Container(
+                  padding: const EdgeInsets.all(20.0),
+                  height: MediaQuery.of(context).size.height * 0.52 - 50,
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 30.0),
+                      Text(
+                        '1 of 3',
+                        style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Color(0xff5cb0c9)),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Choose a challenge that intrigues you, lies in your interest.',
+                        style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 19.0,
+                            color: Colors.grey[800]),
+                      ),
+                      SizedBox(
+                        height: 70.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          FlatButton(
+                            shape: RoundedRectangleBorder(
+                                //borderRadius: BorderRadius.circular(30.0),
+                                ),
+                            color: Color(0xFFE73131),
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).pop();
+                              uploadcomplete1(context);
+                            },
+                            child: Text(
+                              'Next',
+                              style: TextStyle(
+                                  fontFamily: 'Segoe UI',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 19.0,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  )));
+        });
+  }
 
-
-uploadcomplete1(context) {
-  return showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Dialog(
-            //shape: RoundedRectangleBorder(
+  uploadcomplete1(context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return Dialog(
+              //shape: RoundedRectangleBorder(
               //  borderRadius: BorderRadius.circular(10.0)),
-            child: Container(
-              padding: const EdgeInsets.all(20.0),
-                height: MediaQuery.of(context).size.height*0.52-50,
-                width: MediaQuery.of(context).size.width*0.7,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    
-                    SizedBox(height:30.0),
-                    Text(
-                  '2 of 3',
-                  style: TextStyle(
-                      fontFamily: 'Segoe UI',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16.0,
-                      color: Color(0xff5cb0c9)),
-                ),
-                SizedBox(height: 20.0,),
-                Text(
-                  'You can either choose to do the challenge now or save it to do later.',
-                  style: TextStyle(
-                      fontFamily: 'Segoe UI',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 19.0,
-                      color: Colors.grey[800]),
-                ),
-                SizedBox(height: 10.0,),
-                Text(
-                  'A notification will be sent to remind you of the challenge ',
-                  style: TextStyle(
-                      fontFamily: 'Segoe UI',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.0,
-                      color: Colors.grey[600]),
-                ),
-                SizedBox(height: 28.0,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[FlatButton(
-                shape: RoundedRectangleBorder(
-                  //borderRadius: BorderRadius.circular(30.0),
-                ),
-                color: Color(0xFFE73131),
-                onPressed: () {Navigator.of(context, rootNavigator: true).pop();uploadcomplete2(context);},
-                child: Text(
-                  'Next',
-                  style: TextStyle(
-                      fontFamily: 'Segoe UI',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 19.0,
-                      color: Colors.white),
-                ),
-              ),],)
-                
-                
-                    
-                  ],
-                )));
-      });
-}
+              child: Container(
+                  padding: const EdgeInsets.all(20.0),
+                  height: MediaQuery.of(context).size.height * 0.52 - 50,
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 30.0),
+                      Text(
+                        '2 of 3',
+                        style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Color(0xff5cb0c9)),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'You can either choose to do the challenge now or save it to do later.',
+                        style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 19.0,
+                            color: Colors.grey[800]),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        'A notification will be sent to remind you of the challenge ',
+                        style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14.0,
+                            color: Colors.grey[600]),
+                      ),
+                      SizedBox(
+                        height: 28.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          FlatButton(
+                            shape: RoundedRectangleBorder(
+                                //borderRadius: BorderRadius.circular(30.0),
+                                ),
+                            color: Color(0xFFE73131),
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).pop();
+                              uploadcomplete2(context);
+                            },
+                            child: Text(
+                              'Next',
+                              style: TextStyle(
+                                  fontFamily: 'Segoe UI',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 19.0,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  )));
+        });
+  }
 
-uploadcomplete2(context) {
-  return showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Dialog(
-            //shape: RoundedRectangleBorder(
+  uploadcomplete2(context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return Dialog(
+              //shape: RoundedRectangleBorder(
               //  borderRadius: BorderRadius.circular(10.0)),
-            child: Container(
-              padding: const EdgeInsets.all(20.0),
-                height: MediaQuery.of(context).size.height*0.52-50,
-                width: MediaQuery.of(context).size.width*0.7,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    
-                    SizedBox(height:30.0),
-                    Text(
-                  '3 of 3',
-                  style: TextStyle(
-                      fontFamily: 'Segoe UI',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16.0,
-                      color: Color(0xff5cb0c9)),
-                ),
-                SizedBox(height: 20.0,),
-                Text(
-                  'Earn stars for your each and every achievements as you progress further in this app.',
-                  style: TextStyle(
-                      fontFamily: 'Segoe UI',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 19.0,
-                      color: Colors.grey[800]),
-                ),
-                SizedBox(height: 70.0,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[FlatButton(
-                shape: RoundedRectangleBorder(
-                  //borderRadius: BorderRadius.circular(30.0),
-                ),
-                color: Color(0xFFE73131),
-                onPressed: () {Navigator.of(context, rootNavigator: true).pop();},
-                child: Text(
-                  'OK',
-                  style: TextStyle(
-                      fontFamily: 'Segoe UI',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 19.0,
-                      color: Colors.white),
-                ),
-              ),],)
-                
-                
-                    
-                  ],
-                )));
-      });
-}
+              child: Container(
+                  padding: const EdgeInsets.all(20.0),
+                  height: MediaQuery.of(context).size.height * 0.52 - 50,
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 30.0),
+                      Text(
+                        '3 of 3',
+                        style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Color(0xff5cb0c9)),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Earn stars for your each and every achievements as you progress further in this app.',
+                        style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 19.0,
+                            color: Colors.grey[800]),
+                      ),
+                      SizedBox(
+                        height: 70.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          FlatButton(
+                            shape: RoundedRectangleBorder(
+                                //borderRadius: BorderRadius.circular(30.0),
+                                ),
+                            color: Color(0xFFE73131),
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).pop();
+                            },
+                            child: Text(
+                              'OK',
+                              style: TextStyle(
+                                  fontFamily: 'Segoe UI',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 19.0,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  )));
+        });
+  }
 
-
+  not() {
+    int d = 0;
+    Firestore.instance
+        .collection("USER")
+        .document(login.uid)
+        .collection("NOTIFICATION")
+        .getDocuments()
+        .then((a) {
+      d = a.documentChanges.length;
+      if (d == 0) {
+      } else if (!load) {
+        setState(() {
+          load = true;
+        });
+      }
+    });
+    if (!load && d == 0) {
+      return Icon(
+        Icons.notifications,
+        color: Color(0XFF9C9C9C),
+      );
+    } else
+      return Stack(
+        children: <Widget>[
+          Icon(Icons.notifications,color: Color(0XFF9C9C9C),),
+          Positioned(
+            left: 12,
+            bottom:8,
+            child: Text(".",style:TextStyle(color: Color(0xffe73131),fontSize: 45)),
+          )
+        ],
+      );
+  }
 }
 
 class Tile extends StatelessWidget {
